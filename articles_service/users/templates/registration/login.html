@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form class="form_log" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {% if messages %}
+        {% for message in messages %}
+            <div class="need_auth">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+            <div class="errorlist">
+                Вы ввели неверный логин и/или пароль
+            </div>
+        {% endif %}
+        <div class="font_corr">Логин</div>
+        {{ form.username }}
+        <div class="font_corr">Пароль</div>
+        {{ form.password }}
+        <button type="submit">Войти</button>
+        <a href="{% url 'register_page' %}" class="register_but">Нет аккаунта? Зарегистрироваться</a>
+    </form>
+{% endblock %}

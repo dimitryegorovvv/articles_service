@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load group_tags %}
+{% block title %} {{ article.title }} {% endblock %}
+{% block content %}
+    <div class="home_wr">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="no_perm_con_pan">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <div class="home_art_title">
+            {{ article.title }}
+        </div>
+        {% if article.image %}
+            <img class="img_art" src="{{ article.image.url }}" alt="">
+        {% endif %}
+        <div data-article-text="{{ article.text }}" class="home_art_text article_text pad_ed">
+            {{ article.text }}
+        </div>
+        <div class="art_a_d">
+            <div class="home_art_author">
+                {{ article.author }}
+            </div>
+            <div class="home_art_date no_marg">
+                {{ article.date|date:"Y-m-d H:i:s" }}
+            </div>
+        </div>
+        <form class="form_edit_art" action="{% url 'edit_article' article.id %}" method="post">
+            {% csrf_token %}
+            <button data-article-id="{{ article.id }}" type="submit">Сохранить изменения</button>
+        </form>
+        {% if request.user|has_group:'admin' %}
+                <button class="btn_edit_art" data-url="{% url 'edit_article' article.id %}" data-article-id="{{ article.id }}" type="submit">Редактировать</button>
+        {% endif %}
+        <div class="need_auth"></div>
+        <form action="{% url 'send_comment' article.id %}" method="post" class="form_comment">
+            {% csrf_token %}
+            {{ form.text }}
+            <button type="submit" class="send_comment">Отправить</button>
+        </form>
+        <div class="comments_wr">
+            {% for comment in comments %}
+                <div class="comment_text pad_ed">
+                    {{ comment.text }}
+                </div>
+                <div class="comm_a_d">
+                    <div class="comment_author">
+                        {{ comment.author }}
+                    </div>
+                    <div class="comment_date">
+                        {{ comment.date|date:"Y-m-d H:i:s" }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

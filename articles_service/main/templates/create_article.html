@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Написать статью {% endblock %}
+{% block content %}
+        <form class="create_article_form" enctype="multipart/form-data" data-text="{{ text|escapejs }}" method="post" action="{% url 'create_article' %}">
+            {% csrf_token %}
+            <textarea maxlength="100" autofocus name="article_title" placeholder="название статьи" class="create_article_name"></textarea>
+            <textarea maxlength="10000" name="article_text" placeholder="текст статьи" class="create_article_text"></textarea>
+            <div class="title_error">Название должно содержать минимум 3 символа</div>
+            <div class="text_error">Текст должен содержать минимум 10 символов</div>
+            <div class="art_published">Ваша статья отправлена на рассмотрение</div>
+            <div class="text_to_image">Прикрепить изображение</div>
+            <input type="file" name="article_image" accept="image/*" class="create_article_image">
+            <button type="submit" class="create_article_button">Отправить</button>
+        </form>
+{% endblock %}

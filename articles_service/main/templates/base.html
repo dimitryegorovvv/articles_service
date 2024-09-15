@@ -1,0 +1,62 @@
+{% load static %}
+{% load group_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Главная {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'script.js' %}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="head_h">
+            <a href="/" class="header_main">Главная</a>
+            <a href="{% url 'create_article_page' %}" class="header_create_article">Написать статью</a>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="user_log">
+                <div class="welcome">
+                    Добро пожаловать, {{ user.username }} 
+                </div>
+                <form class="header_text" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    &nbsp;
+                    |
+                    &nbsp;
+                    <button class="but_log" type="submit">Выйти</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="user_not_log">
+                <a href="{% url 'login' %}" class="login">
+                    Войти
+                    &nbsp;
+                    |
+                    &nbsp;
+                </a>
+                <a href="{% url 'register_page' %}" class="register">
+                    Зарегистрироваться
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% if request.user|has_group:'admin' %}
+        <div class="header">
+            <a href="{% url 'control_panel' %}" class="control_panel">
+                Панель управления
+            </a>
+            <a href="{% url 'admin:index' %}" class="control_panel">
+                Панель администрирования
+            </a>
+        </div>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

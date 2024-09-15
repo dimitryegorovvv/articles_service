@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %} Опубликовать статью {% endblock %}
+{% block content %}
+    <div class="home_wr">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="no_perm_con_pan">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% for article in articles %}
+            <div class="con_pan_art_wr">
+                <a href="{% url 'article' article.id %}" class="home_art_title">
+                    {{ article.title }}
+                </a>
+                <div class="home_art_text">
+                    {{ article.text }}
+                </div>
+                <div class="af_text">
+                    
+                </div>
+                <div class="comm_a_d">
+                    <div class="comment_author">
+                        {{ article.author }}
+                    </div>
+                    <div class="comment_date">
+                        {{ article.date|date:"Y-m-d H:i:s" }}
+                    </div>
+                </div>
+                <form class="form_but_pan" action="{% url 'publish_article' article.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="publish_art_btn" data-article-id="{{ article.id }}" type="submit">
+                        Опубликовать
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
