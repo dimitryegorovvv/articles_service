@@ -30,14 +30,14 @@ $(document).ready(function() {
                 url: form.attr('action'),
                 type: 'POST',
                 data: formData,
-                contentType: false, // Не устанавливать заголовок Content-Type
-                processData: false, // Не преобразовывать данные
+                contentType: false, 
+                processData: false, 
                 success: function() {
                     timeout_sending(del_text=true);
                     $('.art_published').css('display', 'block');
                     $('.create_article_name').val('');
                     $('.create_article_text').val('');
-                    $('input[name="article_image"]').val(''); // Очистить поле изображения
+                    $('input[name="article_image"]').val(''); 
                 },
                 error: function() {
                     alert("Произошла ошибка, попробуйте позже");
