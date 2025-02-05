@@ -44,7 +44,6 @@ def create_article(request):
     else:
         image = request.FILES.get('article_image')
         print(request.FILES)
-        print('hui')
         print(image)
         new_article = Article(title=title, text=text, author=request.user)
         if image:
